@@ -516,33 +516,45 @@ namespace Final_Project_GUI
                 // Replenish player hand first
                 for (int i = pnlPlayerHand.Controls.Count; i < handSize; i++)
                 {
-                    Card newCard = theTalon.DrawCard();
-                    newCard.FaceUp = true;
+                    try
+                    {
+                        Card newCard = theTalon.DrawCard();
+                        newCard.FaceUp = true;
 
-                    // Create a new CardBox control based on the card drawn
-                    CardBox aCardBox = new CardBox(newCard);
+                        // Create a new CardBox control based on the card drawn
+                        CardBox aCardBox = new CardBox(newCard);
 
-                    // Wire the event handlers for this CardBox
-                    aCardBox.Click += CardBox_Click;
-                    aCardBox.MouseEnter += CardBox_MouseEnter;
-                    aCardBox.MouseLeave += CardBox_MouseLeave;
+                        // Wire the event handlers for this CardBox
+                        aCardBox.Click += CardBox_Click;
+                        aCardBox.MouseEnter += CardBox_MouseEnter;
+                        aCardBox.MouseLeave += CardBox_MouseLeave;
 
-                    // Add the new control to the appropriate panel
-                    pnlPlayerHand.Controls.Add(aCardBox);
+                        // Add the new control to the appropriate panel
+                        pnlPlayerHand.Controls.Add(aCardBox);
+                    } catch (CardOutOfRangeException core)
+                    {
+                        System.Diagnostics.Debug.WriteLine(core.StackTrace);
+                    }
                 }
                 RealignCards(pnlPlayerHand);
 
                 // Replenish AI hand second
                 for (int i = pnlOpponentHand.Controls.Count; i < handSize; i++)
                 {
-                    Card newCard = theTalon.DrawCard();
-                    newCard.FaceUp = true;
+                    try {
+                        Card newCard = theTalon.DrawCard();
+                        newCard.FaceUp = true;
+                        
+                        // Create a new CardBox control based on the card drawn
+                        CardBox aCardBox = new CardBox(newCard);
 
-                    // Create a new CardBox control based on the card drawn
-                    CardBox aCardBox = new CardBox(newCard);
-
-                    // Add the new control to the appropriate panel
-                    pnlOpponentHand.Controls.Add(aCardBox);
+                        // Add the new control to the appropriate panel
+                        pnlOpponentHand.Controls.Add(aCardBox);
+                    }
+                    catch (CardOutOfRangeException core)
+                    {
+                        System.Diagnostics.Debug.WriteLine(core.StackTrace);
+                    }
                 }
                 RealignCards(pnlOpponentHand);
             }
