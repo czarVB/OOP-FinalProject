@@ -17,3 +17,9 @@ C:\Users\ebhcz\Downloads\College\OOP - Object Oriented Prog\Final Project\OOP-42
 C:\Users\ebhcz\Downloads\College\OOP - Object Oriented Prog\Final Project\OOP-4200-01-Final-Project-master\OOP-4200-01-Final-Project-master\Final Project GUI\Final Project GUI\obj\Debug\Final_Project_GUI.frmBoard.resources
 C:\Users\ebhcz\Downloads\College\OOP - Object Oriented Prog\Final Project\OOP-4200-01-Final-Project-master\OOP-4200-01-Final-Project-master\Final Project GUI\Final Project GUI\obj\Debug\Final_Project_GUI.Properties.Resources.resources
 C:\Users\ebhcz\Downloads\College\OOP - Object Oriented Prog\Final Project\OOP-4200-01-Final-Project-master\OOP-4200-01-Final-Project-master\Final Project GUI\Final Project GUI\obj\Debug\Final Project GUI.csproj.GenerateResource.Cache
+C:\Users\Hamza\Desktop\OOP III\NN\Final Project GUI\obj\Debug\Final Project GUI.csprojAssemblyReference.cache
+C:\Users\Hamza\Desktop\OOP III\NN\Final Project GUI\obj\Debug\Final_Project_GUI.frmBoard.resources
+C:\Users\Hamza\Desktop\OOP III\NN\Final Project GUI\obj\Debug\Final_Project_GUI.Properties.Resources.resources
+C:\Users\Hamza\Desktop\OOP III\NN\Final Project GUI\obj\Debug\Final Project GUI.csproj.GenerateResource.cache
+C:\Users\Hamza\Desktop\OOP III\NN\Final Project GUI\obj\Debug\Final Project GUI.exe
+C:\Users\Hamza\Desktop\OOP III\NN\Final Project GUI\obj\Debug\Final Project GUI.pdb

@@ -99,7 +99,12 @@ namespace CardLib
                 cards.RemoveAt(0);
                 if (Count() == 0)
                 {
-                    drawnCard.LastCard = true;
+                    //drawnCard.LastCard = true;
+                    //for(int i = 0; i > cards.Count(); i++)
+                    //{
+                    //    cards[i] = cards[i + 1];
+                    //}
+                    //cards.RemoveAt(cards.Count());
                 }
             }
             else

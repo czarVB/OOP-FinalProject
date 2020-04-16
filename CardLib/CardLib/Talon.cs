@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CardLib
 {
-    class Talon : ICloneable
+    public class Talon : ICloneable
     {
         Cards theTalon = new Cards();
         private int riverCardsRemaning = 0;
@@ -19,7 +19,7 @@ namespace CardLib
         }
 
         //parameriterized constructor sets new talon
-        private Talon(Cards newDeck)
+        public Talon(Cards newDeck)
         {
             theTalon = newDeck;
         }
@@ -104,8 +104,8 @@ namespace CardLib
             return attack;
         }
 
-        //shuffle method, randomizes the order of the cardlist, 
-        //then uses the copy to method in cardlist to copy over the cards to a new cardlist deck. 
+        //shuffle method, randomizes the order of the cards, 
+        //then uses the copy to method in cardlist to copy over the cards to a new deck. 
         public void Shuffle(int deckSize)
         {
             Cards newDeck = new Cards();

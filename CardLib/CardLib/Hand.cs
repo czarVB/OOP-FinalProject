@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CardLib
 {
-    class Hand : ICloneable
+    public class Hand : List<Card>, ICloneable
     {
         //instance attributes
         Cards hand = new Cards();
@@ -40,15 +40,12 @@ namespace CardLib
         }
 
         //will add cards to players hand
-        public void AddCards(Cards cards)
+        public void AddCards(Deck cards, int handSize)
         {
-
-
-            for (int i = 0; i < cards.Count(); i++)
+            for (int i = 0; i < handSize; i++)
             {
-                hand.Add(cards[i]);
+                hand[i] = cards.DrawCard();
             }
-
             cardCount = hand.Count();
         }
 
