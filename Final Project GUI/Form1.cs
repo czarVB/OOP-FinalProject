@@ -326,5 +326,300 @@ namespace Final_Project_GUI
             }
         }
 
+<<<<<<< HEAD
+=======
+        /// <summary>
+        /// This will be there area where the difficulty is determined
+        /// </summary>
+        private void AITurn()
+        {
+            // AI is on defense
+            if (!AIAttacking)
+            {
+                DefendLogicMedium();
+            }
+            else if (AIAttacking && !AIAlreadyAttacked) // AI is on the offense
+            {
+                AttackLogicEasy();
+                AvailablePlayerCards();
+                playerTurn = true;
+            }
+            else
+            {
+                ContinueAttackAIEasy();
+                AvailablePlayerCards();
+                playerTurn = true;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void DefendLogicMedium()
+        {
+            int theNumber = pnlPlayArea.Controls.Count - 1;
+            CardBox cardBoxToBeat = (CardBox)pnlPlayArea.Controls[theNumber];
+            Card cardToBeat = cardBoxToBeat.Card;
+            bool winning = false;
+            CardBox thePlay = null;
+
+            // Determine which card to play
+            foreach (CardBox handCard in pnlOpponentHand.Controls)
+            {
+                // Suits match, card is higher value
+                if (handCard.Card.Suit == cardToBeat.Suit && handCard.Rank > cardToBeat.Rank)
+                {
+                    thePlay = handCard;
+                    winning = true;
+                }
+            }
+
+            // Didn't win by rank, look for trump card in hand
+            if (!winning && cardToBeat.Suit != trumpCard.Suit)
+            {
+                // Determine which card to play
+                foreach (CardBox handCard in pnlOpponentHand.Controls)
+                {
+                    // Suits match, card is higher value
+                    if (handCard.Card.Suit == trumpCard.Suit)
+                    {
+                        thePlay = handCard;
+                        winning = true;
+                    }
+                }
+            }
+            else if (winning)
+            {
+                // Play the winning card
+                MoveCard(thePlay, pnlPlayArea, pnlOpponentHand);
+            }
+            else // Unwinnable, pick up the card
+            {
+                MoveCard(cardBoxToBeat, pnlOpponentHand, pnlPlayArea);
+            }
+
+            // Pass the turn to the human player
+            playerTurn = true;
+            AvailablePlayerCards();
+        }
+
+        private void AttackLogicEasy()
+        {
+            MoveCard((CardBox)pnlOpponentHand.Controls[0], pnlPlayArea, pnlOpponentHand);
+            playerTurn = true;
+            AIAlreadyAttacked = true;
+        }
+
+        private void ContinueAttackAIEasy()
+        {
+            // Determine which ranks are playable
+            List<Rank> availableRanks = new List<Rank>();
+            bool rankMatch = false;
+
+            foreach (CardBox cardBox in pnlPlayArea.Controls)
+            {
+                availableRanks.Add(cardBox.Card.Rank);
+            }
+
+            // Cycle through the hand and determine which cards are no longer playable
+            foreach (CardBox cardBox in pnlOpponentHand.Controls)
+            {
+                foreach (Rank rank in availableRanks)
+                {
+                    if (cardBox.Rank == rank)
+                    {
+                        rankMatch = true;
+                        MoveCard(cardBox, pnlPlayArea, pnlOpponentHand);
+                    }
+                }
+
+                if (rankMatch)
+                {
+                    MoveCard(cardBox, pnlPlayArea, pnlOpponentHand);
+                }
+                else
+                {
+                    // The turn ends
+                    ReplenishHands(false);
+                    ClearBoard();
+
+                    // Add the removed event handlers back
+                    foreach (CardBox cardBoxPlayer in pnlPlayerHand.Controls)
+                    {
+                        cardBox.Click += CardBox_Click;
+                    }
+
+                    playerTurn = true;
+                    AIAttacking = false;
+                    AIAlreadyAttacked = false;
+                }
+            }
+        }
+
+        private void ReplenishHands(bool humanAttacked)
+        {
+            if (humanAttacked)
+            {
+                // Replenish player hand first
+                for (int i = pnlPlayerHand.Controls.Count; i < handSize; i++)
+                {
+                    try
+                    {
+                        Card newCard = theTalon.DrawCard();
+                        newCard.FaceUp = true;
+
+                        // Create a new CardBox control based on the card drawn
+                        CardBox aCardBox = new CardBox(newCard);
+
+                        // Wire the event handlers for this CardBox
+                        aCardBox.Click += CardBox_Click;
+                        aCardBox.MouseEnter += CardBox_MouseEnter;
+                        aCardBox.MouseLeave += CardBox_MouseLeave;
+
+                        // Add the new control to the appropriate panel
+                        pnlPlayerHand.Controls.Add(aCardBox);
+                    } catch (CardOutOfRangeException core)
+                    {
+                        System.Diagnostics.Debug.WriteLine(core.StackTrace);
+                    }
+                }
+                RealignCards(pnlPlayerHand);
+
+                // Replenish AI hand second
+                for (int i = pnlOpponentHand.Controls.Count; i < handSize; i++)
+                {
+                    try {
+                        Card newCard = theTalon.DrawCard();
+                        newCard.FaceUp = true;
+                        
+                        // Create a new CardBox control based on the card drawn
+                        CardBox aCardBox = new CardBox(newCard);
+
+                        // Add the new control to the appropriate panel
+                        pnlOpponentHand.Controls.Add(aCardBox);
+                    }
+                    catch (CardOutOfRangeException core)
+                    {
+                        System.Diagnostics.Debug.WriteLine(core.StackTrace);
+                    }
+                }
+                RealignCards(pnlOpponentHand);
+            }
+            else
+            {
+                // Replenish AI hand first
+                for (int i = pnlOpponentHand.Controls.Count; i < handSize; i++)
+                {
+                    Card newCard = theTalon.DrawCard();
+                    newCard.FaceUp = true;
+                    CardBox newCardBox = new CardBox(newCard);
+                    pnlOpponentHand.Controls.Add(newCardBox);
+                }
+                RealignCards(pnlOpponentHand);
+
+                // Replenish player hand second
+                for (int i = pnlPlayerHand.Controls.Count; i < handSize; i++)
+                {
+                    Card newCard = theTalon.DrawCard();
+                    newCard.FaceUp = true;
+
+                    // Create a new CardBox control based on the card drawn
+                    CardBox aCardBox = new CardBox(newCard);
+
+                    // Wire the event handlers for this CardBox
+                    aCardBox.Click += CardBox_Click;
+                    aCardBox.MouseEnter += CardBox_MouseEnter;
+                    aCardBox.MouseLeave += CardBox_MouseLeave;
+
+                    // Add the new control to the appropriate panel
+                    pnlPlayerHand.Controls.Add(aCardBox);
+                }
+                RealignCards(pnlPlayerHand);
+            }
+        }
+
+        private void ClearBoard()
+        {
+            // Remove the cards from the play area
+            int count = pnlPlayArea.Controls.Count;
+            for (int i = count - 1; i >= 0; i--)
+            {
+                pnlPlayArea.Controls.RemoveAt(i);
+            }
+
+            // Add the removed event handlers back
+            foreach (CardBox cardBox in pnlPlayerHand.Controls)
+            {
+                cardBox.Click += CardBox_Click;
+            }
+
+            playerTurn = false;
+            AIAttacking = false;
+            AIAlreadyAttacked = false;
+        }
+
+        private void AvailablePlayerCards()
+        {
+            // Determine which ranks are playable
+            List<Rank> availableRanks = new List<Rank>();
+            bool rankMatch = false;
+
+            foreach (CardBox cardBox in pnlPlayArea.Controls)
+            {
+                availableRanks.Add(cardBox.Card.Rank);
+            }
+
+            // Cycle through the hand and determine which cards are no longer playable
+            foreach (CardBox cardBox in pnlPlayerHand.Controls)
+            {
+                foreach (Rank rank in availableRanks)
+                {
+                    if (cardBox.Rank == rank)
+                    {
+                        rankMatch = true;
+                    }
+                }
+
+                if (!rankMatch)
+                {
+                    cardBox.Click -= CardBox_Click;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="theCardBox"></param>
+        /// <param name="toPanel"></param>
+        /// <param name="fromPanel"></param>
+        private void MoveCard(CardBox theCardBox, Panel toPanel, Panel fromPanel)
+        {
+            toPanel.Controls.Add(theCardBox);
+            fromPanel.Controls.Remove(theCardBox);
+            RealignCards(toPanel);
+            RealignCards(fromPanel);
+        }
+
+        private void btnAction_Click(object sender, EventArgs e)
+        {
+            // Replenish hands
+            ReplenishHands(true);
+
+            // Clear the board
+            ClearBoard();
+
+            // Add the removed event handlers back
+            foreach (CardBox cardBox in pnlPlayerHand.Controls)
+            {
+                cardBox.Click += CardBox_Click;
+            }
+
+            // Pass the turn
+            playerTurn = false;
+            AIAttacking = true;
+            AITurn();
+        }
+>>>>>>> addf4bb1849dcd2570e90a8b97ce5987761fee1d
     }
 }
