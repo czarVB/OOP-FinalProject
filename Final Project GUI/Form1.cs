@@ -326,8 +326,6 @@ namespace Final_Project_GUI
             }
         }
 
-<<<<<<< HEAD
-=======
         /// <summary>
         /// This will be there area where the difficulty is determined
         /// </summary>
@@ -465,7 +463,7 @@ namespace Final_Project_GUI
                 {
                     try
                     {
-                        Card newCard = theTalon.DrawCard();
+                        Card newCard = myDeck.DrawCard();
                         newCard.FaceUp = true;
 
                         // Create a new CardBox control based on the card drawn
@@ -489,7 +487,7 @@ namespace Final_Project_GUI
                 for (int i = pnlOpponentHand.Controls.Count; i < handSize; i++)
                 {
                     try {
-                        Card newCard = theTalon.DrawCard();
+                        Card newCard = myDeck.DrawCard();
                         newCard.FaceUp = true;
                         
                         // Create a new CardBox control based on the card drawn
@@ -510,7 +508,7 @@ namespace Final_Project_GUI
                 // Replenish AI hand first
                 for (int i = pnlOpponentHand.Controls.Count; i < handSize; i++)
                 {
-                    Card newCard = theTalon.DrawCard();
+                    Card newCard = myDeck.DrawCard();
                     newCard.FaceUp = true;
                     CardBox newCardBox = new CardBox(newCard);
                     pnlOpponentHand.Controls.Add(newCardBox);
@@ -520,7 +518,7 @@ namespace Final_Project_GUI
                 // Replenish player hand second
                 for (int i = pnlPlayerHand.Controls.Count; i < handSize; i++)
                 {
-                    Card newCard = theTalon.DrawCard();
+                    Card newCard = myDeck.DrawCard();
                     newCard.FaceUp = true;
 
                     // Create a new CardBox control based on the card drawn
@@ -620,6 +618,5 @@ namespace Final_Project_GUI
             AIAttacking = true;
             AITurn();
         }
->>>>>>> addf4bb1849dcd2570e90a8b97ce5987761fee1d
     }
 }
