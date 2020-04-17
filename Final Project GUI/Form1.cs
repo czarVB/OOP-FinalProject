@@ -188,7 +188,7 @@ namespace Final_Project_GUI
                     RealignCards(pnlPlayArea);
 
                     // AI's response
-                    //AITurn();
+                    AITurn();
                 }
             }
             else
@@ -228,7 +228,7 @@ namespace Final_Project_GUI
                     RealignCards(pnlPlayArea);
 
                     // AI's response
-                    //AITurn();
+                    AITurn();
                 }
             }
         }
@@ -601,11 +601,36 @@ namespace Final_Project_GUI
 
         private void btnAction_Click(object sender, EventArgs e)
         {
-            // Replenish hands
-            ReplenishHands(true);
+            if(btnAction.Text == "End Attack")
+            {
+                // Replenish hands
+                ReplenishHands(true);
+                // Clear the board
+                ClearBoard();
+            }
+            if (btnAction.Text == "Take Cards")
+            {
+                for (int i = 0; i < pnlPlayArea.Controls.Count; i++)
+                {
+                    CardBox aCardBox = new CardBox(playerHand[i]);
 
-            // Clear the board
-            ClearBoard();
+                    playerHand.AddCard(theTalon[i]);
+
+                    pnlPlayerHand.Controls.Add(aCardBox);
+
+                    theTalon.Remove(aCardBox.Card);
+                    
+                    playerHand.Remove(aCardBox.Card);
+                    // Resize the CardBox - not sure why this is needed
+                    aCardBox.Size = cardSize;
+                    // Add the control to the play panel
+                    pnlPlayArea.Controls.Remove(aCardBox);
+                }
+                
+                // Clear the board
+                ClearBoard();
+            }
+
 
             // Add the removed event handlers back
             foreach (CardBox cardBox in pnlPlayerHand.Controls)
@@ -617,6 +642,83 @@ namespace Final_Project_GUI
             playerTurn = false;
             AIAttacking = true;
             AITurn();
+        }
+
+        /// <summary>
+        /// When a drag is enters a card, enter the parent panel instead.
+        /// </summary>
+        void CardBox_DragEnter(object sender, DragEventArgs e)
+        {
+            // Convert sender to a CardBox
+            CardBox aCardBox = sender as CardBox;
+
+            // If the conversion worked
+            if (aCardBox != null)
+            {
+                // Do the operation on the parent panel instead
+                Panel_DragEnter(aCardBox.Parent, e);
+            }
+        }
+        /// <summary>
+        /// When a drag is dropped on a card, drop on the parent panel instead.
+        /// </summary>
+        void CardBox_DragDrop(object sender, DragEventArgs e)
+        {
+            // Convert sender to a CardBox
+            CardBox aCardBox = sender as CardBox;
+
+            // If the conversion worked
+            if (aCardBox != null)
+            {
+                // Do the operation on the parent panel instead
+                Panel_DragDrop(aCardBox.Parent, e);
+            }
+        }
+        /// <summary>
+        /// Make the mouse pointer a "move" pointer when a drag enters a Panel.
+        /// </summary>
+        private void Panel_DragEnter(object sender, DragEventArgs e)
+        {
+            if (playerTurn)
+            {
+                // Make the mouse pointer a "move" pointer
+                e.Effect = DragDropEffects.Move;
+            }
+
+        }
+        /// <summary>
+        /// Move a card/control when it is dropped from one Panel to another.
+        /// </summary>
+        private void Panel_DragDrop(object sender, DragEventArgs e)
+        {
+            if (playerTurn)
+            {
+                // If there is a CardBox to move
+                if (dragCard != null)
+                {
+                    // Determine which Panel is which
+                    Panel thisPanel = sender as Panel;
+                    Panel fromPanel = dragCard.Parent as Panel;
+
+                    // If neither panel is null (no conversion issue)
+                    if (thisPanel != null && fromPanel != null)
+                    {
+                        // if the Panels are not the same (this would happen if a card is dragged from one spot in the Panel to another)
+                        if (thisPanel != fromPanel)
+                        {
+                            // Remove the card from the Panel it started in
+                            fromPanel.Controls.Remove(dragCard);
+
+                            // Add the card to the Panel it was dropped in 
+                            thisPanel.Controls.Add(dragCard);
+
+                            // Realign cards in both Panels
+                            RealignCards(thisPanel);
+                            RealignCards(fromPanel);
+                        }
+                    }
+                }
+            }
         }
     }
 }

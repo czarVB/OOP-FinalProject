@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CardLib
 {
-    public class Deck : ICloneable
+    public class Deck : List<Card>,ICloneable
     {
         public event EventHandler LastCardDrawn;
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CardLib
 {
-    public class Talon : ICloneable
+    public class Talon : List<Card>, ICloneable
     {
         Cards theTalon = new Cards();
         private int riverCardsRemaning = 0;
@@ -67,7 +67,7 @@ namespace CardLib
             theTalon.Clear();
         }
 
-        //will compare the cards enetered into the river 
+        //will compare the cards enetered into talon
         public bool cardDefendValidation(Card trumpCard, Card card)
         {
             bool defended = false;
