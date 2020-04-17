@@ -3,80 +3,86 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/**
+ * Board.cs - A class determining the behaviour of the board
+ *
+ * Author: Hamza Khan - 100709587
+ * Writen: 2020/04/10
+ * Since: 2020/04/17
+ */
 namespace CardLib
 {
-    public class Talon : List<Card>, ICloneable
+    public class Board : List<Card>, ICloneable
     {
-        Cards theTalon = new Cards();
+        Cards theBoard = new Cards();
         private int riverCardsRemaning = 0;
 
 
         //default constructor
-        public Talon()
+        public Board()
         {
 
         }
 
-        //parameriterized constructor sets new talon
-        public Talon(Cards newDeck)
+        //parameriterized constructor sets new Board
+        public Board(Cards newDeck)
         {
-            theTalon = newDeck;
+            theBoard = newDeck;
         }
 
 
-        //addcardtoriver method, will add a card to talon
+        //addcardtoriver method, will add a card to Board
         public void AddCard(Card card)
         {
-            theTalon.Add(card);
-            riverCardsRemaning = theTalon.Count();
+            theBoard.Add(card);
+            riverCardsRemaning = theBoard.Count();
         }
 
-        //removecardfromriver method, will remove a card from the talon
+        //removecardfromriver method, will remove a card from the Board
         public void RemoveCard(Card card)
         {
-            theTalon.Remove(card);
-            riverCardsRemaning = theTalon.Count();
+            theBoard.Remove(card);
+            riverCardsRemaning = theBoard.Count();
         }
 
-        //shows the length of the talon
+        //shows the length of the Board
         public int length()
         {
-            return theTalon.Count();
+            return theBoard.Count();
         }
 
         //get card based on int number
         public Card GetCard(int cardNumber)
         {
             if (cardNumber >= 0 && cardNumber <= 51)
-                return theTalon[cardNumber];
+                return theBoard[cardNumber];
             else
                 throw (new System.ArgumentOutOfRangeException("cardNumber", cardNumber, "The deck is between 0 and 51 cards long, how do you screw this up?."));
         }
 
-        //clones the talon cards
+        //clones the Board cards
         public object Clone()
         {
-            Talon newTalon = new Talon(theTalon.Clone() as Cards);
-            return newTalon;
+            Board newBoard = new Board(theBoard.Clone() as Cards);
+            return newBoard;
         }
 
-        //clears the talon
+        //clears the Board
         public void Clear()
         {
-            theTalon.Clear();
+            theBoard.Clear();
         }
 
-        //will compare the cards enetered into talon
+        //will compare the cards enetered into Board
         public bool cardDefendValidation(Card trumpCard, Card card)
         {
             bool defended = false;
 
-            if (theTalon.Count % 2 == 0)
+            if (theBoard.Count % 2 == 0)
             {
-                if (card.Suit == theTalon[theTalon.Count - 1].Suit | theTalon[1].Suit == trumpCard.Suit)
+                if (card.Suit == theBoard[theBoard.Count - 1].Suit | theBoard[1].Suit == trumpCard.Suit)
                 {
-                    if (card > theTalon[theTalon.Count - 1] | theTalon[theTalon.Count].Suit == trumpCard.Suit)
+                    if (card > theBoard[theBoard.Count - 1] | theBoard[theBoard.Count].Suit == trumpCard.Suit)
                         defended = true;
                 }
                 return defended;
@@ -89,14 +95,14 @@ namespace CardLib
         {
             bool attack = false;
 
-            if (theTalon.Count == 0)
+            if (theBoard.Count == 0)
             {
                 attack = true;
             }
 
-            if (theTalon.Count % 2 != 0)
+            if (theBoard.Count % 2 != 0)
             {
-                if (attackingCard.Rank == theTalon[theTalon.Count].Rank | attackingCard.Rank == theTalon[theTalon.Count - 1].Rank)
+                if (attackingCard.Rank == theBoard[theBoard.Count].Rank | attackingCard.Rank == theBoard[theBoard.Count - 1].Rank)
                 {
                     attack = true;
                 }
@@ -122,9 +128,9 @@ namespace CardLib
                         foundCard = true;
                 }
                 assigned[sourceCard] = true;
-                newDeck.Add(theTalon[sourceCard]);
+                newDeck.Add(theBoard[sourceCard]);
             }
-            newDeck.CopyTo(theTalon);
+            newDeck.CopyTo(theBoard);
         }
     }
 }

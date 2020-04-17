@@ -23,8 +23,8 @@ namespace Final_Project_GUI
         private const int POP = 25;
         // If we choose to implement drag and drop functionality (doesn't work alongside _Click)
         private CardBox dragCard;
-        Deck myDeck = new Deck();
-        Talon theTalon = new Talon();
+        Deck theTalon = new Deck();
+        Board theBoard = new Board();
         Hand playerHand = new Hand();
         Hand computerHand = new Hand();
         Card trumpCard = new Card();
@@ -39,8 +39,8 @@ namespace Final_Project_GUI
 
         public void newGame()
         {
-            Deck myDeck = new Deck();
-            Talon theTalon = new Talon();
+            Deck theTalon = new Deck();
+            Board theBoard = new Board();
             Hand playerHand = new Hand();
             Hand computerHand = new Hand();
 
@@ -52,12 +52,12 @@ namespace Final_Project_GUI
         private void frmBoard_Load(object sender, EventArgs e)
         {
             newGame();
-            trumpCard = myDeck.DrawCard();
+            trumpCard = theTalon.DrawCard();
             pbTalon.Image = trumpCard.GetCardImage();
             trumpCard.FaceUp = true;
             pbTrumpSuit.Image = trumpCard.GetCardImage();
 
-            playerHand.AddCards(myDeck, handSize);
+            playerHand.AddCards(theTalon, handSize);
             for (int i = 1; i <= handSize; i++)
             {
                 playerHand[i].FaceUp = true;
@@ -76,7 +76,7 @@ namespace Final_Project_GUI
                 RealignCards(pnlPlayerHand);
             }
 
-            computerHand.AddCards(myDeck, handSize);
+            computerHand.AddCards(theTalon, handSize);
             for (int i = 1; i <= handSize; i++)
             {
                 computerHand[i].FaceUp = true;
@@ -165,11 +165,11 @@ namespace Final_Project_GUI
                         // If the card 
                         if (aCardBox.Parent == pnlPlayerHand)
                         {
-                            if (theTalon.cardAttackValidation(aCardBox.Card))
+                            if (theBoard.cardAttackValidation(aCardBox.Card))
                             {
                                 // Remove the card from the home panel
                                 pnlPlayerHand.Controls.Remove(aCardBox);
-                                theTalon.AddCard(aCardBox.Card);
+                                theBoard.AddCard(aCardBox.Card);
                                 playerHand.Remove(aCardBox.Card);
                                 // Resize the CardBox - not sure why this is needed
                                 aCardBox.Size = cardSize;
@@ -205,11 +205,11 @@ namespace Final_Project_GUI
                         // If the card 
                         if (aCardBox.Parent == pnlPlayerHand)
                         {
-                            if (theTalon.cardDefendValidation(trumpCard, aCardBox.Card))
+                            if (theBoard.cardDefendValidation(trumpCard, aCardBox.Card))
                             {
                                 // Remove the card from the home panel
                                 pnlPlayerHand.Controls.Remove(aCardBox);
-                                theTalon.AddCard(aCardBox.Card);
+                                theBoard.AddCard(aCardBox.Card);
                                 playerHand.Remove(aCardBox.Card);
                                 // Resize the CardBox - not sure why this is needed
                                 aCardBox.Size = cardSize;
@@ -463,7 +463,7 @@ namespace Final_Project_GUI
                 {
                     try
                     {
-                        Card newCard = myDeck.DrawCard();
+                        Card newCard = theTalon.DrawCard();
                         newCard.FaceUp = true;
 
                         // Create a new CardBox control based on the card drawn
@@ -487,7 +487,7 @@ namespace Final_Project_GUI
                 for (int i = pnlOpponentHand.Controls.Count; i < handSize; i++)
                 {
                     try {
-                        Card newCard = myDeck.DrawCard();
+                        Card newCard = theTalon.DrawCard();
                         newCard.FaceUp = true;
                         
                         // Create a new CardBox control based on the card drawn
@@ -508,7 +508,7 @@ namespace Final_Project_GUI
                 // Replenish AI hand first
                 for (int i = pnlOpponentHand.Controls.Count; i < handSize; i++)
                 {
-                    Card newCard = myDeck.DrawCard();
+                    Card newCard = theTalon.DrawCard();
                     newCard.FaceUp = true;
                     CardBox newCardBox = new CardBox(newCard);
                     pnlOpponentHand.Controls.Add(newCardBox);
@@ -518,7 +518,7 @@ namespace Final_Project_GUI
                 // Replenish player hand second
                 for (int i = pnlPlayerHand.Controls.Count; i < handSize; i++)
                 {
-                    Card newCard = myDeck.DrawCard();
+                    Card newCard = theTalon.DrawCard();
                     newCard.FaceUp = true;
 
                     // Create a new CardBox control based on the card drawn
@@ -614,14 +614,14 @@ namespace Final_Project_GUI
                 {
                     CardBox aCardBox = new CardBox(playerHand[i]);
 
-                    playerHand.AddCard(theTalon[i]);
+                    playerHand.AddCard(theBoard[i]);
 
                     pnlPlayerHand.Controls.Add(aCardBox);
 
-                    theTalon.Remove(aCardBox.Card);
+                    theBoard.Remove(aCardBox.Card);
                     
                     playerHand.Remove(aCardBox.Card);
-                    // Resize the CardBox - not sure why this is needed
+                    // Resize the CardBox
                     aCardBox.Size = cardSize;
                     // Add the control to the play panel
                     pnlPlayArea.Controls.Remove(aCardBox);

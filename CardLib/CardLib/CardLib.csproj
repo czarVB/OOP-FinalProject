@@ -57,7 +57,7 @@
     </Compile>
     <Compile Include="Rank.cs" />
     <Compile Include="Suit.cs" />
-    <Compile Include="Talon.cs" />
+    <Compile Include="Board.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

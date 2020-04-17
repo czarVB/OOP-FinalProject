@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+/**
+ * Hand.cs - A class representing and determining the behaviour of a players hand
+ *
+ * Author: Hamza Khan - 100709587
+ * Writen: 2020/04/10
+ * Since: 2020/04/17
+ */
 namespace CardLib
 {
     public class Hand : List<Card>, ICloneable
